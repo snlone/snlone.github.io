@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>http://www.snlone.cn</id>
+    <title>Snlone&apos;s Blog</title>
+    <updated>2025-02-23T08:41:28.423Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="http://www.snlone.cn"/>
+    <link rel="self" href="http://www.snlone.cn/atom.xml"/>
+    <subtitle>本乎热爱</subtitle>
+    <logo>http://www.snlone.cn/images/avatar.png</logo>
+    <icon>http://www.snlone.cn/favicon.ico</icon>
+    <rights>All rights reserved 2025, Snlone&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[人才选拔系统]]></title>
+        <id>http://www.snlone.cn/post/52/</id>
+        <link href="http://www.snlone.cn/post/52/">
+        </link>
+        <updated>2024-02-21T06:56:03.000Z</updated>
+    </entry>
+</feed>
