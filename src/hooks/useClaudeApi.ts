@@ -38,7 +38,6 @@ export function useClaudeApi() {
       const response = await client.chat.completions.create({
         model: settings.model,
         messages: [{ role: 'user', content: prompt }],
-        max_tokens: 1024,
       });
 
       const text = response.choices[0]?.message?.content?.trim() ?? '';
