@@ -97,16 +97,16 @@ export default function App() {
     <>
       {!settings && <ApiKeySetup onSave={handleSaveSettings} />}
 
-      <div className="min-h-screen bg-gray-50">
-        <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
+      <div className="min-h-screen bg-claude-bg">
+        <div className="max-w-3xl mx-auto px-4 py-10 space-y-5">
           {/* Header */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-start justify-between mb-2">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 tracking-tight">任务分解助手</h1>
-              <p className="text-gray-500 text-sm mt-1">
+              <h1 className="text-2xl font-semibold text-claude-text tracking-tight">任务分解助手</h1>
+              <p className="text-claude-text-muted text-sm mt-1">
                 {settings ? (
-                  <span className="text-gray-400">
-                    模型：<span className="font-medium text-gray-600">{settings.model}</span>
+                  <span>
+                    模型：<span className="font-medium text-claude-text-secondary">{settings.model}</span>
                   </span>
                 ) : (
                   '将大任务拆解为可执行的小步骤'
@@ -115,7 +115,7 @@ export default function App() {
             </div>
             <button
               onClick={handleResetSettings}
-              className="text-xs text-gray-400 hover:text-gray-600 underline"
+              className="text-xs text-claude-text-muted hover:text-claude-text-secondary transition-colors mt-1"
             >
               重设接口配置
             </button>
@@ -125,7 +125,7 @@ export default function App() {
           {tasks.length > 0 && <ProgressSummary stats={stats} />}
 
           {/* Task input */}
-          <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="bg-claude-surface rounded-xl border border-claude-border p-4 shadow-sm">
             <TaskInput
               onAdd={handleAddRootTask}
               onDecompose={handleDecomposeNew}
@@ -135,7 +135,7 @@ export default function App() {
 
           {/* Error message */}
           {errorMsg && (
-            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3 flex items-start gap-2">
+            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 flex items-start gap-2">
               <span className="flex-shrink-0 mt-0.5">⚠</span>
               <div>
                 <p className="font-semibold">AI 分解失败</p>
@@ -152,7 +152,7 @@ export default function App() {
 
           {/* Task list */}
           {tasks.length > 0 ? (
-            <div className="bg-white rounded-xl border border-gray-200 p-4 space-y-1">
+            <div className="bg-claude-surface rounded-xl border border-claude-border p-4 shadow-sm space-y-1">
               {tasks.map((task) => (
                 <TaskNode
                   key={task.id}
@@ -177,10 +177,10 @@ export default function App() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-16 text-gray-400">
-              <p className="text-5xl mb-4">✦</p>
-              <p className="text-lg font-medium text-gray-500">还没有任何任务</p>
-              <p className="text-sm mt-1">在上方输入一个大目标，点击「✦ AI 分解」开始</p>
+            <div className="text-center py-16">
+              <p className="text-4xl mb-4 text-claude-orange opacity-60">✦</p>
+              <p className="text-base font-medium text-claude-text-secondary">还没有任何任务</p>
+              <p className="text-sm mt-1 text-claude-text-muted">在上方输入一个大目标，点击「✦ AI 分解」开始</p>
             </div>
           )}
 
@@ -193,7 +193,7 @@ export default function App() {
                     dispatch({ type: 'SET_TREE', payload: [] });
                   }
                 }}
-                className="text-xs text-gray-400 hover:text-red-500 transition-colors"
+                className="text-xs text-claude-text-muted hover:text-red-500 transition-colors"
               >
                 清空所有任务
               </button>

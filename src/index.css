@@ -4,10 +4,24 @@
 
 body {
   margin: 0;
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  font-family: ui-sans-serif, 'Segoe UI', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
+  background-color: #FAF9F6;
 }
 
 #root {
   width: 100%;
 }
+
+/* Scrollbar subtle styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #D4C9BC;
+  border-radius: 3px;
+}
+

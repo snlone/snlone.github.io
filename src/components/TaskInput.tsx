@@ -38,19 +38,19 @@ export function TaskInput({ onAdd, onDecompose, isLoading }: Props) {
         onChange={(e) => setTitle(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="输入一个大任务，如：开发一个博客网站..."
-        className="flex-1 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="flex-1 border border-claude-border rounded-lg px-4 py-2.5 text-sm text-claude-text bg-claude-bg placeholder:text-claude-text-muted focus:outline-none focus:ring-2 focus:ring-claude-orange/40 focus:border-claude-orange transition-colors"
       />
       <button
         onClick={handleAdd}
         disabled={!title.trim()}
-        className="bg-gray-100 hover:bg-gray-200 disabled:opacity-40 text-gray-700 font-medium px-4 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap"
+        className="bg-claude-surface-hover hover:bg-claude-border-light disabled:opacity-40 text-claude-text-secondary font-medium px-4 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap border border-claude-border"
       >
         + 添加任务
       </button>
       <button
         onClick={handleDecompose}
         disabled={!title.trim() || isLoading}
-        className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 text-white font-semibold px-4 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap flex items-center gap-2"
+        className="bg-claude-orange hover:bg-claude-orange-hover disabled:opacity-40 text-white font-semibold px-4 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap flex items-center gap-2"
       >
         {isLoading ? (
           <>
