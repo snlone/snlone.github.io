@@ -79,21 +79,31 @@ export function TaskNode({
       ? Math.round((subtreeProgress.completed / subtreeProgress.total) * 100)
       : 0;
 
-  const indentClass = depth > 0 ? 'ml-6 border-l-2 border-claude-border-light pl-4' : '';
+  const paddingLeft = depth > 0 ? `${depth * 20 + 12}px` : '8px';
 
   return (
-    <div className={`${indentClass} group/node`}>
+    <div className="group/node">
       <div
-        className={`flex items-start gap-2 py-1.5 px-2 rounded-lg hover:bg-claude-surface-hover transition-colors ${
+        className={`flex items-start gap-2.5 py-2 rounded-xl hover:bg-claude-surface-hover transition-colors relative ${
           task.completed ? 'opacity-50' : ''
         }`}
+        style={{ paddingLeft, paddingRight: '8px' }}
       >
+        {/* Depth indicator line */}
+        {depth > 0 && (
+          <div
+            className="absolute left-0 top-0 bottom-0 w-px bg-claude-border-light"
+            style={{ left: `${depth * 20 - 1}px` }}
+          />
+        )}
+
         {/* Expand toggle */}
         <button
           onClick={() => hasChildren && onToggleExpand(task.id)}
-          className={`mt-0.5 w-4 h-4 flex-shrink-0 text-claude-text-muted hover:text-claude-text-secondary transition-transform text-[10px] ${
+          className={`mt-0.5 w-4 h-4 flex-shrink-0 flex items-center justify-center text-claude-text-faint hover:text-claude-text-muted transition-all text-[9px] ${
             hasChildren ? 'cursor-pointer' : 'invisible'
           } ${task.isExpanded ? 'rotate-90' : ''}`}
+          style={{ transition: 'transform 0.15s ease, color 0.15s ease' }}
         >
           ▶
         </button>
@@ -103,10 +113,10 @@ export function TaskNode({
           type="checkbox"
           checked={task.completed}
           onChange={() => onToggleComplete(task.id)}
-          className="mt-1 flex-shrink-0 w-4 h-4 cursor-pointer accent-[#D97757]"
+          className="mt-0.5"
         />
 
-        {/* Title */}
+        {/* Content */}
         <div className="flex-1 min-w-0">
           {isEditing ? (
             <input
@@ -120,8 +130,12 @@ export function TaskNode({
           ) : (
             <span
               onClick={() => setIsEditing(true)}
-              className={`text-sm cursor-text select-none leading-snug ${
-                task.completed ? 'line-through text-claude-text-muted' : 'text-claude-text'
+              className={`text-sm cursor-text leading-snug block ${
+                task.completed
+                  ? 'line-through text-claude-text-muted'
+                  : depth === 0
+                  ? 'text-claude-text font-medium'
+                  : 'text-claude-text'
               }`}
             >
               {task.title}
@@ -129,19 +143,19 @@ export function TaskNode({
           )}
 
           {task.description && !isEditing && (
-            <p className="text-xs text-claude-text-muted mt-0.5 leading-snug">{task.description}</p>
+            <p className="text-xs text-claude-text-muted mt-0.5 leading-relaxed">{task.description}</p>
           )}
 
-          {/* Subtree progress bar */}
+          {/* Collapsed subtree progress */}
           {hasChildren && !task.isExpanded && (
-            <div className="flex items-center gap-2 mt-1">
-              <div className="flex-1 bg-claude-border-light rounded-full h-1.5 overflow-hidden max-w-[120px]">
+            <div className="flex items-center gap-2 mt-1.5">
+              <div className="flex-1 bg-claude-border-light rounded-full h-1 overflow-hidden max-w-[100px]">
                 <div
-                  className="bg-claude-orange h-1.5 rounded-full transition-all"
-                  style={{ width: `${subtreePercent}%` }}
+                  className="bg-claude-orange h-1 rounded-full"
+                  style={{ width: `${subtreePercent}%`, transition: 'width 0.4s ease' }}
                 />
               </div>
-              <span className="text-xs text-claude-text-muted">
+              <span className="text-[11px] text-claude-text-faint tabular-nums">
                 {subtreeProgress?.completed}/{subtreeProgress?.total}
               </span>
             </div>
@@ -150,32 +164,34 @@ export function TaskNode({
 
         {/* Time badge */}
         {task.estimatedMinutes != null && (
-          <span className="flex-shrink-0 text-xs bg-claude-orange-light text-claude-orange border border-claude-orange/20 rounded-full px-2 py-0.5 font-medium">
+          <span className="flex-shrink-0 text-[11px] bg-claude-orange-subtle text-claude-orange border border-claude-orange/15 rounded-full px-2 py-0.5 font-medium mt-0.5 tabular-nums">
             {formatMinutes(task.estimatedMinutes)}
           </span>
         )}
 
-        {/* Action buttons */}
-        <div className="flex-shrink-0 flex items-center gap-1 opacity-0 group-hover/node:opacity-100 transition-opacity">
+        {/* Action buttons — appear on hover */}
+        <div className="flex-shrink-0 flex items-center gap-1 opacity-0 group-hover/node:opacity-100 transition-opacity mt-0.5">
           <button
             onClick={() => onDecomposeChild(task.id, task.title)}
             disabled={isDecomposing}
             title="AI 分解此任务"
-            className="text-xs bg-claude-orange-subtle hover:bg-claude-orange-light disabled:opacity-40 text-claude-orange rounded px-2 py-0.5 font-medium transition-colors"
+            className="text-[11px] font-semibold bg-claude-orange-subtle hover:bg-claude-orange-light disabled:opacity-40 text-claude-orange rounded-md px-2 py-0.5 transition-colors whitespace-nowrap"
           >
-            {isDecomposing ? '…' : '✦ AI'}
+            {isDecomposing ? (
+              <span className="shimmer-text">…</span>
+            ) : '✦ AI'}
           </button>
           <button
             onClick={() => setAddingChild(true)}
             title="添加子任务"
-            className="text-xs bg-claude-surface-hover hover:bg-claude-border-light text-claude-text-secondary rounded px-2 py-0.5 font-medium transition-colors"
+            className="text-[11px] text-claude-text-muted hover:text-claude-text-secondary hover:bg-claude-surface-hover rounded-md px-2 py-0.5 transition-colors"
           >
             + 子任务
           </button>
           <button
             onClick={() => onDelete(task.id)}
-            title="删除任务"
-            className="text-xs text-claude-text-muted hover:text-red-500 hover:bg-red-50 rounded px-1.5 py-0.5 transition-colors"
+            title="删除"
+            className="text-[11px] text-claude-text-faint hover:text-red-400 rounded-md px-1.5 py-0.5 transition-colors"
           >
             ✕
           </button>
@@ -184,7 +200,7 @@ export function TaskNode({
 
       {/* New child input */}
       {addingChild && (
-        <div className="ml-10 mr-2 mt-1 mb-1">
+        <div className="mt-1 mb-1" style={{ paddingLeft: `${(depth + 1) * 20 + 28}px`, paddingRight: '8px' }}>
           <input
             ref={childInputRef}
             value={newChildTitle}
@@ -192,14 +208,14 @@ export function TaskNode({
             onBlur={submitNewChild}
             onKeyDown={handleChildKeyDown}
             placeholder="输入子任务名称，Enter 确认…"
-            className="w-full text-sm border border-claude-border rounded-lg px-3 py-1.5 text-claude-text bg-claude-bg placeholder:text-claude-text-muted focus:outline-none focus:ring-2 focus:ring-claude-orange/40 focus:border-claude-orange transition-colors"
+            className="w-full text-sm border border-claude-border rounded-lg px-3 py-1.5 text-claude-text bg-claude-bg placeholder:text-claude-text-faint focus:outline-none focus:ring-2 focus:ring-claude-orange/20 focus:border-claude-orange transition-colors"
           />
         </div>
       )}
 
       {/* Children */}
       {hasChildren && task.isExpanded && (
-        <div className="mt-0.5">
+        <div>
           {task.children.map((child) => (
             <TaskNode
               key={child.id}

@@ -2,26 +2,141 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --font-display: 'Cormorant Garamond', 'Noto Serif SC', Georgia, serif;
+  --font-body: 'Geist', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei UI', ui-sans-serif, system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: ui-sans-serif, 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
-  background-color: #FAF9F6;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F8F5F0;
+  letter-spacing: 0.005em;
+  color: #1C1208;
 }
 
 #root {
   width: 100%;
+  min-height: 100vh;
 }
 
-/* Scrollbar subtle styling */
+/* Subtle paper grain overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* Display font utility */
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D4C9BC;
-  border-radius: 3px;
+  background: #D9CEBC;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C4B8A6;
 }
 
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid #D97757;
+  outline-offset: 2px;
+}
+
+/* Checkbox custom style */
+input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #C8BDB2;
+  border-radius: 4px;
+  background: #FDFAF7;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+input[type='checkbox']:checked {
+  background: #D97757;
+  border-color: #D97757;
+}
+input[type='checkbox']:checked::after {
+  content: '';
+  position: absolute;
+  left: 3.5px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: 2px solid white;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+input[type='checkbox']:hover:not(:checked) {
+  border-color: #D97757;
+}
+
+/* Spinner animation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.animate-spin {
+  animation: spin 0.7s linear infinite;
+}
+
+/* Fade-in for cards */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Shimmer for decomposing state */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.shimmer-text {
+  background: linear-gradient(90deg, #D97757 0%, #F0A882 40%, #D97757 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 1.6s linear infinite;
+}
